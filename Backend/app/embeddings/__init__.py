@@ -1,0 +1,29 @@
+"""
+Embeddings Package
+==================
+Exports the lazily initialized EmbeddingService singleton.
+"""
+
+from app.embeddings.embedding_service import EmbeddingService
+from app.embeddings.clip_service import CLIPService
+
+_embedding_service_instance = None
+_clip_service_instance = None
+
+def get_embedding_service() -> EmbeddingService:
+    """Lazily instantiate and return the EmbeddingService singleton."""
+    global _embedding_service_instance
+    if _embedding_service_instance is None:
+        _embedding_service_instance = EmbeddingService()
+    return _embedding_service_instance
+
+def get_clip_service() -> CLIPService:
+    """Lazily instantiate and return the CLIPService singleton."""
+    global _clip_service_instance
+    if _clip_service_instance is None:
+        _clip_service_instance = CLIPService()
+    return _clip_service_instance
+
+# Alias for ease of use
+embedding_service = get_embedding_service()
+clip_service = get_clip_service()

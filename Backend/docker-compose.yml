@@ -1,0 +1,66 @@
+# =============================================================================
+# NEXUS — Docker Compose (local development)
+# =============================================================================
+# Usage:  docker-compose up -d
+# =============================================================================
+
+services:
+
+  # ── FastAPI Application ──────────────────────────────────────────────────
+  app:
+    build: .
+    container_name: nexus-app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - ./uploads:/app/uploads
+    depends_on:
+      - postgres
+      - redis
+      - chromadb
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    restart: unless-stopped
+
+  # ── PostgreSQL ───────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: nexus-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: nexus
+      POSTGRES_PASSWORD: nexus
+      POSTGRES_DB: nexus_db
+    volumes:
+      - nexus_pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # ── Redis ────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: nexus-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - nexus_redis:/data
+    restart: unless-stopped
+
+  # ── ChromaDB (vector store) ──────────────────────────────────────────────
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: nexus-chromadb
+    ports:
+      - "8100:8000"
+    volumes:
+      - nexus_chroma:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+    restart: unless-stopped
+
+volumes:
+  nexus_pgdata:
+  nexus_redis:
+  nexus_chroma:
