@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/lib/stores/auth";
 import { useAuth } from "@/lib/hooks/useAuth";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { token, hydrate } = useAuthStore();
   const { isLoading } = useAuth();
   const [checked, setChecked] = useState(false);
@@ -14,10 +14,12 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     hydrate();
     const stored = localStorage.getItem("nexus_token");
     if (!stored) {
-      router.replace("/login");
+      navigate("/login", { replace: true });
+      return;
     }
-    setChecked(true);
-  }, [router, hydrate]);
+    const timer = window.setTimeout(() => setChecked(true), 0);
+    return () => window.clearTimeout(timer);
+  }, [navigate, hydrate]);
 
   if (!checked || (isLoading && !token)) {
     return (

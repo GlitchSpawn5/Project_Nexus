@@ -41,7 +41,7 @@ export function UserTable({ users, onUpdated }: { users: AdminUser[]; onUpdated:
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="section-panel overflow-x-auto rounded-lg p-4">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-white/6 text-left text-xs text-white/35 font-medium">

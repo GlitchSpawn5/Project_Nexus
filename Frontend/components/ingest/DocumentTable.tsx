@@ -59,7 +59,7 @@ export function DocumentTable({ documents, onDeleted }: Props) {
 
   if (!documents.length) {
     return (
-      <p className="py-8 text-center text-sm text-white/30">No documents yet. Upload files above.</p>
+      <p className="py-8 text-center text-sm text-white/30">No documents yet. Upload files to build the evidence layer.</p>
     );
   }
 
@@ -99,8 +99,10 @@ export function DocumentTable({ documents, onDeleted }: Props) {
                   <Badge
                     variant={
                       doc.status === "ready"
+                        || doc.status === "complete"
                         ? "success"
                         : doc.status === "error"
+                        || doc.status === "failed"
                         ? "error"
                         : doc.status === "processing"
                         ? "info"

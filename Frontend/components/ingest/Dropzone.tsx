@@ -1,7 +1,7 @@
 "use client";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { Upload, FileType } from "lucide-react";
+import { FileAudio, FileImage, FileText, FileType, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ACCEPTED_EXTENSIONS = {
@@ -37,18 +37,18 @@ export function Dropzone({ onFiles, disabled }: Props) {
     <div
       {...getRootProps()}
       className={cn(
-        "relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 text-center transition-all cursor-pointer",
+        "relative flex min-h-72 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center transition-all",
         isDragActive
-          ? "border-violet-500/60 bg-violet-500/8"
-          : "border-white/10 hover:border-white/20 hover:bg-white/2",
+          ? "border-teal-300/70 bg-teal-300/8"
+          : "border-white/14 bg-white/[0.025] hover:border-white/24 hover:bg-white/[0.04]",
         disabled && "opacity-40 pointer-events-none"
       )}
     >
       <input {...getInputProps()} />
       <div
         className={cn(
-          "flex h-12 w-12 items-center justify-center rounded-xl mb-3 transition-colors",
-          isDragActive ? "bg-violet-500/20 text-violet-400" : "bg-white/6 text-white/40"
+          "mb-4 flex h-14 w-14 items-center justify-center rounded-lg transition-colors",
+          isDragActive ? "bg-teal-300/16 text-teal-300" : "bg-white/6 text-white/45"
         )}
       >
         {isDragActive ? <FileType className="h-6 w-6" /> : <Upload className="h-6 w-6" />}
@@ -57,12 +57,26 @@ export function Dropzone({ onFiles, disabled }: Props) {
         <p className="text-sm text-violet-400 font-medium">Drop to ingest</p>
       ) : (
         <>
-          <p className="text-sm font-medium text-white/70">
-            Drag files here or <span className="text-violet-400">click to upload</span>
+          <p className="text-sm font-medium text-white/76">
+            Drag files here or <span className="text-teal-300">click to upload</span>
           </p>
-          <p className="mt-1 text-xs text-white/30">
+          <p className="mt-1 text-xs text-white/34">
             PDF, DOCX, images, audio, video — up to 50 MB
           </p>
+          <div className="mt-5 flex flex-wrap justify-center gap-2 text-xs text-white/36">
+            <span className="flex items-center gap-1 rounded-md bg-white/[0.04] px-2 py-1">
+              <FileText className="h-3 w-3 text-blue-300" />
+              Text
+            </span>
+            <span className="flex items-center gap-1 rounded-md bg-white/[0.04] px-2 py-1">
+              <FileImage className="h-3 w-3 text-amber-300" />
+              OCR
+            </span>
+            <span className="flex items-center gap-1 rounded-md bg-white/[0.04] px-2 py-1">
+              <FileAudio className="h-3 w-3 text-emerald-300" />
+              Whisper
+            </span>
+          </div>
         </>
       )}
     </div>

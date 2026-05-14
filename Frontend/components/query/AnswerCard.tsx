@@ -1,6 +1,6 @@
 "use client";
 import { ConfidenceBadge } from "./ConfidenceBadge";
-import { AlertTriangle, GitBranch } from "lucide-react";
+import { AlertTriangle, GitBranch, Quote } from "lucide-react";
 import type { AnswerCitation, GraphData } from "@/lib/types/api";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -37,12 +37,10 @@ function parseAnnotatedText(text: string, citations: AnswerCitation[]): Token[] 
 }
 
 function CitationChip({
-  label,
   citation,
   index,
   onShowChain,
 }: {
-  label: string;
   citation: AnswerCitation;
   index: number;
   onShowChain?: (data: GraphData) => void;
@@ -62,14 +60,14 @@ function CitationChip({
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
-        <button className="inline-flex items-center justify-center h-5 min-w-5 px-1.5 rounded text-[10px] font-bold bg-violet-500/25 text-violet-300 border border-violet-500/40 hover:bg-violet-500/40 transition-colors cursor-pointer align-middle mx-0.5">
+        <button className="mx-0.5 inline-flex h-5 min-w-5 cursor-pointer items-center justify-center rounded border border-teal-300/35 bg-teal-300/14 px-1.5 align-middle text-[10px] font-bold text-teal-100 transition-colors hover:bg-teal-300/24">
           {index}
         </button>
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
           side="top"
-          className="z-50 w-72 glass rounded-xl p-4 shadow-2xl"
+          className="z-50 w-72 rounded-lg border border-white/10 bg-[#0b1017] p-4 shadow-2xl"
           sideOffset={5}
         >
           <p className="text-xs font-medium text-white/40 mb-2 uppercase tracking-wider">Source</p>
@@ -85,7 +83,7 @@ function CitationChip({
             <button
               onClick={handleChain}
               disabled={loading}
-              className="mt-3 flex items-center gap-1 text-xs text-cyan-400 hover:text-cyan-300 transition-colors"
+              className="mt-3 flex items-center gap-1 text-xs text-teal-300 transition-colors hover:text-teal-200"
             >
               <GitBranch className="h-3 w-3" />
               {loading ? "Loading…" : "Show chain"}
@@ -108,7 +106,7 @@ export function AnswerCard({
   const tokens = parseAnnotatedText(answer, citations ?? []);
 
   return (
-    <div className="glass rounded-xl p-5">
+    <div className="section-panel rounded-lg p-5">
       {insufficientEvidence && (
         <div className="flex items-center gap-2 text-amber-400 bg-amber-500/10 border border-amber-500/25 rounded-lg px-3 py-2 mb-4 text-sm">
           <AlertTriangle className="h-4 w-4 shrink-0" />
@@ -117,7 +115,11 @@ export function AnswerCard({
       )}
 
       {confidenceScore !== undefined && (
-        <div className="mb-3">
+        <div className="mb-4 flex items-center justify-between gap-3 border-b border-white/8 pb-3">
+          <div className="flex items-center gap-2 text-sm font-medium text-white/75">
+            <Quote className="h-4 w-4 text-teal-300" />
+            Grounded answer
+          </div>
           <ConfidenceBadge score={confidenceScore} />
         </div>
       )}
@@ -135,7 +137,6 @@ export function AnswerCard({
           return (
             <CitationChip
               key={i}
-              label={token.label}
               citation={token.citation}
               index={idx}
               onShowChain={onShowChain}

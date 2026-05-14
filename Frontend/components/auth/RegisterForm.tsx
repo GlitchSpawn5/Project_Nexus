@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,7 +20,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function RegisterForm() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { setToken, setUser } = useAuthStore();
   const {
     register,
@@ -35,7 +35,7 @@ export function RegisterForm() {
       setToken(access_token);
       const user = await getMe();
       setUser(user);
-      router.push("/dashboard");
+      navigate("/dashboard");
     } catch (err: unknown) {
       toast.error(extractErrorMessage(err, "Registration failed"));
     }
@@ -45,12 +45,12 @@ export function RegisterForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-1.5">
         <Label htmlFor="full_name">Full name</Label>
-        <Input id="full_name" placeholder="Ada Lovelace" {...register("full_name")} />
+        <Input id="full_name" placeholder="Jordan Lee" {...register("full_name")} />
         {errors.full_name && <p className="text-xs text-red-400">{errors.full_name.message}</p>}
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" placeholder="you@example.com" {...register("email")} />
+        <Input id="email" type="email" placeholder="name@organization.com" {...register("email")} />
         {errors.email && <p className="text-xs text-red-400">{errors.email.message}</p>}
       </div>
       <div className="space-y-1.5">

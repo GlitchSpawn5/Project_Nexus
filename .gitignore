@@ -29,13 +29,16 @@ celery_*.log
 # Frontend
 Frontend/node_modules/
 Frontend/.next/
+Frontend/dist/
 Frontend/.env.local
+*.tsbuildinfo
 
 # Env
 .env
 *.env.local
 
 # Misc
+.vscode/
 .DS_Store
 Thumbs.db
 alembic.ini

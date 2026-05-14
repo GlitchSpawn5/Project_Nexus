@@ -1,7 +1,7 @@
 // Hand-written types matching the NEXUS FastAPI backend schema
 
 export type UserRole = "admin" | "owner" | "editor" | "viewer";
-export type DocumentStatus = "pending" | "processing" | "ready" | "error";
+export type DocumentStatus = "pending" | "processing" | "ready" | "error" | "complete" | "failed";
 export type JobStatus = "queued" | "processing" | "complete" | "failed";
 export type Modality = "text" | "image" | "audio";
 export type ModalityFilter = "all" | "text" | "image" | "audio";

@@ -1,10 +1,8 @@
 "use client";
 import { useRef, useCallback, useState, useMemo } from "react";
-import dynamic from "next/dynamic";
+import ForceGraph2D from "react-force-graph-2d";
 import type { ForceGraphMethods } from "react-force-graph-2d";
 import type { GraphData, GraphNode, GraphEdge, Modality, LinkType } from "@/lib/types/api";
-
-const ForceGraph2D = dynamic(() => import("react-force-graph-2d"), { ssr: false });
 
 const MODALITY_COLOR: Record<Modality, string> = {
   text: "#3b82f6",
@@ -83,7 +81,8 @@ export function EvidenceGraph({ data, onNodeClick }: Props) {
   const toggleModality = (m: Modality) => {
     setFilters((prev) => {
       const next = new Set(prev.modalities);
-      next.has(m) ? next.delete(m) : next.add(m);
+      if (next.has(m)) next.delete(m);
+      else next.add(m);
       return { ...prev, modalities: next };
     });
   };
@@ -91,17 +90,18 @@ export function EvidenceGraph({ data, onNodeClick }: Props) {
   const toggleLink = (t: LinkType) => {
     setFilters((prev) => {
       const next = new Set(prev.linkTypes);
-      next.has(t) ? next.delete(t) : next.add(t);
+      if (next.has(t)) next.delete(t);
+      else next.add(t);
       return { ...prev, linkTypes: next };
     });
   };
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative h-full w-full">
       <ForceGraph2D
         ref={graphRef}
         graphData={filteredData as unknown as { nodes: object[]; links: object[] }}
-        backgroundColor="#0a0a0f"
+        backgroundColor="#080b10"
         nodeColor={(n) => nodeColor(n as GraphNode)}
         nodeRelSize={5}
         nodeLabel={(n) => {
@@ -121,8 +121,7 @@ export function EvidenceGraph({ data, onNodeClick }: Props) {
         warmupTicks={50}
       />
 
-      {/* Legend overlay */}
-      <div className="absolute top-4 left-4 glass rounded-xl p-3 space-y-3 text-xs">
+      <div className="absolute left-4 top-4 space-y-3 rounded-lg border border-white/10 bg-[#0b1017]/88 p-3 text-xs backdrop-blur">
         <div>
           <p className="text-[10px] uppercase tracking-widest text-white/30 mb-2">Modality</p>
           <div className="space-y-1">

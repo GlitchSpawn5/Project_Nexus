@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Send, Settings2, ChevronDown } from "lucide-react";
+import { ChevronDown, GitBranch, Search, Send, Settings2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
@@ -35,13 +35,35 @@ export function QueryBox({ kbId, onSubmit, isLoading }: Props) {
   };
 
   return (
-    <div className="glass rounded-xl p-4">
+    <div className="section-panel rounded-lg p-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-semibold text-white">Ask across this knowledge space</h2>
+          <p className="mt-1 text-sm text-white/40">
+            Retrieval pulls nearest vectors, expands graph neighbors, then assembles cited evidence.
+          </p>
+        </div>
+        <div className="flex gap-2 text-xs text-white/42">
+          <span className="flex items-center gap-1 rounded-md bg-blue-400/10 px-2 py-1 text-blue-200/80">
+            <Search className="h-3 w-3" />
+            Vector
+          </span>
+          <span className="flex items-center gap-1 rounded-md bg-amber-400/10 px-2 py-1 text-amber-200/80">
+            <GitBranch className="h-3 w-3" />
+            Graph
+          </span>
+          <span className="flex items-center gap-1 rounded-md bg-teal-300/10 px-2 py-1 text-teal-100/80">
+            <Sparkles className="h-3 w-3" />
+            Answer
+          </span>
+        </div>
+      </div>
       <form onSubmit={handleSubmit} className="flex gap-2">
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Ask a question about your documents…"
-          className="flex-1 h-12 text-base"
+          className="h-12 flex-1 text-base"
           disabled={isLoading}
         />
         <Button type="submit" size="lg" disabled={isLoading || !query.trim()} className="h-12 px-5">
@@ -64,8 +86,7 @@ export function QueryBox({ kbId, onSubmit, isLoading }: Props) {
       </form>
 
       {showOptions && (
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-white/8">
-          {/* top_k */}
+        <div className="mt-4 grid grid-cols-2 gap-4 border-t border-white/8 pt-4 sm:grid-cols-4">
           <div className="space-y-1.5">
             <label className="text-xs text-white/40">Top-K results</label>
             <div className="flex items-center gap-2">
@@ -75,13 +96,12 @@ export function QueryBox({ kbId, onSubmit, isLoading }: Props) {
                 max={20}
                 value={topK}
                 onChange={(e) => setTopK(Number(e.target.value))}
-                className="flex-1 accent-violet-500"
+                className="flex-1 accent-teal-300"
               />
               <span className="text-xs font-mono text-white/60 w-5">{topK}</span>
             </div>
           </div>
 
-          {/* modality filter */}
           <div className="space-y-1.5">
             <label className="text-xs text-white/40">Modality</label>
             <Select
@@ -100,28 +120,26 @@ export function QueryBox({ kbId, onSubmit, isLoading }: Props) {
             </Select>
           </div>
 
-          {/* expand chains */}
           <div className="flex items-center gap-2 mt-auto">
             <input
               type="checkbox"
               id="expand"
               checked={expandChains}
               onChange={(e) => setExpandChains(e.target.checked)}
-              className="accent-violet-500 h-4 w-4"
+              className="accent-teal-300 h-4 w-4"
             />
             <label htmlFor="expand" className="text-xs text-white/60 cursor-pointer">
               Evidence chains
             </label>
           </div>
 
-          {/* generate answer */}
           <div className="flex items-center gap-2 mt-auto">
             <input
               type="checkbox"
               id="generate"
               checked={generateAnswer}
               onChange={(e) => setGenerateAnswer(e.target.checked)}
-              className="accent-violet-500 h-4 w-4"
+              className="accent-teal-300 h-4 w-4"
             />
             <label htmlFor="generate" className="text-xs text-white/60 cursor-pointer">
               Generate answer

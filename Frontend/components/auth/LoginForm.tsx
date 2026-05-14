@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,7 +19,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function LoginForm() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { setToken, setUser } = useAuthStore();
   const {
     register,
@@ -33,7 +33,7 @@ export function LoginForm() {
       setToken(access_token);
       const user = await getMe();
       setUser(user);
-      router.push("/dashboard");
+      navigate("/dashboard");
     } catch (err) {
       console.error("Login error:", err);
       toast.error(extractErrorMessage(err, "Login failed — check your credentials"));
@@ -46,8 +46,10 @@ export function LoginForm() {
         <Label htmlFor="email">Email</Label>
         <Input
           id="email"
-          type="email"
-          placeholder="you@example.com"
+          type="text"
+          inputMode="email"
+          autoComplete="email"
+          placeholder="name@organization.com"
           {...register("email")}
         />
         {errors.email && <p className="text-xs text-red-400">{errors.email.message}</p>}

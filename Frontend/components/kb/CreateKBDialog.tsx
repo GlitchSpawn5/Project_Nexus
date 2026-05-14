@@ -30,7 +30,7 @@ export function CreateKBDialog() {
   const onSubmit = async (data: FormData) => {
     try {
       await mutateAsync(data);
-      toast.success("Knowledge base created");
+      toast.success("Knowledge space created");
       setOpen(false);
       reset();
     } catch {
@@ -41,24 +41,24 @@ export function CreateKBDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="gap-2">
+        <Button className="gap-2 whitespace-nowrap">
           <Plus className="h-4 w-4" />
-          New Knowledge Base
+          New Space
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>New Knowledge Base</DialogTitle>
+          <DialogTitle>New Knowledge Space</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-1.5">
             <Label>Name</Label>
-            <Input placeholder="e.g. Research Papers Q3" {...register("name")} />
+            <Input placeholder="e.g. Global policy library" {...register("name")} />
             {errors.name && <p className="text-xs text-red-400">{errors.name.message}</p>}
           </div>
           <div className="space-y-1.5">
             <Label>Description (optional)</Label>
-            <Input placeholder="What's in this knowledge base?" {...register("description")} />
+            <Input placeholder="What trusted content belongs here?" {...register("description")} />
           </div>
           <div className="flex justify-end gap-2 pt-2">
             <Button variant="ghost" type="button" onClick={() => setOpen(false)}>Cancel</Button>
